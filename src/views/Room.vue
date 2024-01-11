@@ -1,5 +1,5 @@
 <template>
-  <div>hi its room</div>
+  <div class="h-screen">hi its room</div>
 </template>
 
 <script setup lang="ts">
