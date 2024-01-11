@@ -6,7 +6,7 @@
       <div class="w-3/4 mx-auto pb-5 border-b">
         <img class="w-full" src="@/assets/img/logo-no-background.png" />
       </div>
-      <form class="space-y-4">
+      <form class="space-y-4" @submit.prevent="submit">
         <div
           class="flex items-center justify-start px-5 pl-1 py-2 bg-white/25 rounded-md"
         >
@@ -57,13 +57,38 @@
           type="submit"
           class="w-full py-3 bg-secondary-500 rounded-md text-white font-bold cursor-pointer"
         />
+        <p
+          class="text-yellow-400/95 font-bold text-sm"
+          ref="txtError"
+          :class="{ hidden: !errorMsg }"
+        >
+          {{ errorMsg }}
+        </p>
       </form>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, type Ref, onMounted } from "vue";
 document.title = "OnlyChat";
+
+const userNameInput = ref();
+const roomNameInput = ref();
+const txtError = ref();
+const errorMsg: Ref<string> = ref("");
+
+function submit() {
+  if (userNameInput.value.value.length < 3) {
+    errorMsg.value = "Username must be longer then 3 letters";
+  } else if (userNameInput.value.value.length > 12) {
+    errorMsg.value = "Username cannot be more than 12 characters";
+  } else if (roomNameInput.value.value.length < 3) {
+    errorMsg.value = "Room name must be longer then 3 letters";
+  } else {
+    errorMsg.value = "";
+  }
+}
 </script>
 
 <style scoped></style>
