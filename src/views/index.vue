@@ -2,7 +2,7 @@
   <div
     class="h-screen flex items-center justify-center overflow-hidden gradient"
   >
-    <div class="h-2/4 space-y-4 w-1/4">
+    <div class="h-2/4 space-y-4 sm:w-80 w-64">
       <div class="w-3/4 mx-auto pb-5 border-b">
         <img class="w-full" src="@/assets/img/logo-no-background.png" />
       </div>
@@ -58,7 +58,7 @@
           class="w-full py-3 bg-secondary-500 rounded-md text-white font-bold cursor-pointer"
         />
         <p
-          class="text-yellow-400/95 font-bold text-sm"
+          class="text-yellow-400/95 font-bold sm:text-sm text-xs"
           ref="txtError"
           :class="{ hidden: !errorMsg }"
         >
