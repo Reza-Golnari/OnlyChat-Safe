@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 interface stateType {
   userName: string | null;
   roomName: string | null;
+  darkMode: boolean;
 }
 
 export const useStore = defineStore("store", {
@@ -10,6 +11,7 @@ export const useStore = defineStore("store", {
     return {
       userName: null,
       roomName: null,
+      darkMode: false,
     };
   },
   actions: {
