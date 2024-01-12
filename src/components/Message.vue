@@ -4,10 +4,13 @@
     :class="{ 'justify-end': msg.user === store.userName }"
   >
     <div
-      class="flex flex-col gap-y-1 shadow py-1 px-3 min-w-56 max-w-[280px] md:max-w-[450px] lg:max-w-[700px] w-max rounded"
+      class="flex flex-col gap-y-1 shadow py-1 px-3 min-w-56 max-w-[280px] md:max-w-[450px] lg:max-w-[700px] w-max rounded transition-colors"
       :class="[
         { 'bg-primary': msg.user === store.userName },
+        { 'dark:bg-primary': msg.user === store.userName },
+        { 'dark:text-white': msg.user === store.userName },
         { 'text-white': msg.user === store.userName },
+        { 'dark:bg-gray-200': msg.user !== store.userName },
       ]"
     >
       <div

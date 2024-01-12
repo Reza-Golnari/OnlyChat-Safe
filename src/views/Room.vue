@@ -1,10 +1,10 @@
 <template>
   <div
-    class="h-screen overflow-hidden font-roboto"
+    class="h-screen overflow-hidden font-roboto transition-colors dark:bg-zinc-900"
     @click="closeSubMenu($event)"
   >
     <nav
-      class="flex items-center justify-between p-3 px-6 bg-white text-center shadow-md"
+      class="flex items-center justify-between p-3 px-6 bg-white dark:bg-zinc-900 transition-colors dark:text-white text-center shadow-md"
     >
       <button>
         <svg
@@ -14,12 +14,13 @@
           stroke-width="1.5"
           stroke="currentColor"
           class="w-6 h-6"
-          v-if="true"
+          @click="store.darkMode = false"
+          v-if="store.darkMode"
         >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
-            d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
+            d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
           />
         </svg>
         <svg
@@ -29,12 +30,13 @@
           stroke-width="1.5"
           stroke="currentColor"
           class="w-6 h-6"
+          @click="store.darkMode = true"
           v-else
         >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
-            d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+            d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
           />
         </svg>
       </button>
@@ -62,11 +64,13 @@
           />
         </svg>
         <ul
-          class="subMenu absolute right-5 top-3 p-2 bg-white shadow-lg rounded transition"
+          class="subMenu absolute right-5 top-3 p-2 bg-white dark:bg-zinc-800 shadow-lg rounded transition"
           :class="[{ invisible: !isSubMenu }, { 'opacity-0': !isSubMenu }]"
           @click="leaveRoom()"
         >
-          <li class="text-red-500 font-bold flex gap-1">
+          <li
+            class="text-red-500 font-bold flex gap-1 transition-colors dark:text-white"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -104,7 +108,7 @@
             v-model="msg"
             @keydown.enter.prevent="sendMessage(msg)"
             placeholder="Start typing..."
-            class="outline-none w-10/12 md:11/12 py-2"
+            class="outline-none w-10/12 md:11/12 py-2 dark:bg-zinc-900 transition-colors dark:text-white"
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
