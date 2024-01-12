@@ -160,6 +160,7 @@ const msgList: Ref<object[]> = ref([]);
 let msgData: {
   user: string;
   text: string;
+  isNotification: boolean;
 };
 
 if (!store.checkStore()) {
@@ -195,19 +196,36 @@ function copyRoomName() {
 socket.emit("join", store.roomName, store.userName);
 
 socket.on("connect", () => {
-  console.log("connected");
+  msgData = {
+    user: "",
+    text: `${store.userName} Connected!`,
+    isNotification: true,
+  };
+  msgList.value.push(msgData);
 });
 
 socket.on("user-data", (data: string) => {
-  console.log(data);
   userID = data;
 });
 
 socket.on("chat-message", (data: any, id: string) => {
+  console.log(data);
   if (userID === id) return;
+  if (data.match("joined in chat!") || data.match("Left the chat")) {
+    msgData = {
+      user: "",
+      text: data,
+      isNotification: true,
+    };
+    msgList.value.push(msgData);
+
+    return;
+  }
+  console.log(false);
   msgData = {
     user: data.split(":")[0],
     text: data.split(":")[1],
+    isNotification: false,
   };
   msgList.value.push(msgData);
   nextTick(() => {
@@ -224,6 +242,7 @@ function sendMessage(newMsg: string) {
   msgList.value.push({
     user: store.userName,
     text: newMsg,
+    isNotification: false,
   });
   msg.value = "";
   nextTick(() => {
@@ -236,8 +255,12 @@ function sendMessage(newMsg: string) {
 
 onBeforeUnmount(() => {
   socket.on("disconnect", () => {
-    console.log("dis");
-    console.log(store.userName, store.roomName);
+    msgData = {
+      user: "",
+      text: `${store.userName} Disconnected!`,
+      isNotification: true,
+    };
+    msgList.value.push(msgData);
   });
 });
 </script>
