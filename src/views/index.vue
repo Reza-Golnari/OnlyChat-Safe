@@ -72,8 +72,11 @@
 <script setup lang="ts">
 import { ref, type Ref } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "@/stores";
 
 document.title = "OnlyChat";
+
+const store = useStore();
 
 const router = useRouter();
 const userNameInput = ref();
@@ -90,9 +93,11 @@ function submit() {
     errorMsg.value = "Room name must be longer then 3 letters";
   } else {
     errorMsg.value = "";
-    // router.push("/chat-room");
+    store.setInfo(
+      userNameInput.value.value.trim(),
+      roomNameInput.value.value.trim()
+    );
+    router.push("/chat-room");
   }
 }
 </script>
-
-<style scoped></style>

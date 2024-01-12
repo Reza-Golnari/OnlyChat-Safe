@@ -4,6 +4,9 @@ export default {
   content: [],
   theme: {
     extend: {
+      fontFamily: {
+        roboto: "roboto",
+      },
       colors: {
         primary: "#007AFF",
         secondary: {
