@@ -95,7 +95,7 @@ function submit() {
     errorMsg.value = "";
     store.setInfo(
       userNameInput.value.value.trim(),
-      roomNameInput.value.value.trim()
+      roomNameInput.value.value.trim().toLowerCase()
     );
     router.push("/chat-room");
   }

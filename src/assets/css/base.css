@@ -23,3 +23,7 @@
 .fade-leave-to {
   opacity: 0;
 }
+
+*::-webkit-scrollbar {
+  display: none;
+}
