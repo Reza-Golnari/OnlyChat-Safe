@@ -2,6 +2,7 @@
   <div
     class="flex items-center"
     :class="{ 'justify-end': msg.user === store.userName }"
+    v-if="!msg.isNotification"
   >
     <div
       class="flex flex-col gap-y-1 shadow py-1 px-3 min-w-56 max-w-[280px] md:max-w-[450px] lg:max-w-[700px] w-max rounded transition-colors"
@@ -27,9 +28,11 @@
       </p>
     </div>
   </div>
+  <Notification :msg="msg.text" v-else />
 </template>
 
 <script setup lang="ts">
+import Notification from "@/components/Notification.vue";
 import { defineProps } from "vue";
 import { useStore } from "@/stores";
 
