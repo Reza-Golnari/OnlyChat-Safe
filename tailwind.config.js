@@ -6,6 +6,7 @@ export default {
     extend: {
       fontFamily: {
         roboto: "roboto",
+        sans: "sans",
       },
       colors: {
         primary: "#007AFF",

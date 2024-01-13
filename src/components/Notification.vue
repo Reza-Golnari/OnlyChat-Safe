@@ -1,6 +1,6 @@
 <template>
   <div
-    class="text-center bg-secondary-900 text-white font-bold rounded-lg transition-colors p-1 tracking-wider"
+    class="text-center bg-secondary-900 text-white font-bold rounded-lg transition-colors p-1 tracking-wider md:max-w-[70%] text-sm md:text-base line-clamp-1 mx-auto"
   >
     {{ msg }}
   </div>
