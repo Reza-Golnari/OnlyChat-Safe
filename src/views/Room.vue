@@ -208,9 +208,16 @@ socket.on("user-data", (data: string) => {
   userID = data;
 });
 
-socket.on("chat-message", (data: any, id: string) => {
+socket.on("chat-message", (data: string, id: string) => {
   console.log(data);
-  if (userID === id) return;
+  if (userID === id) {
+    msgList.value.push({
+      user: store.userName,
+      text: data,
+      isNotification: false,
+    });
+    return;
+  }
   if (data.match("joined in chat!") || data.match("Left the chat")) {
     msgData = {
       user: "",
@@ -239,11 +246,6 @@ socket.on("chat-message", (data: any, id: string) => {
 function sendMessage(newMsg: string) {
   if (!newMsg) return;
   socket.emit("chat-message", newMsg);
-  msgList.value.push({
-    user: store.userName,
-    text: newMsg,
-    isNotification: false,
-  });
   msg.value = "";
   nextTick(() => {
     chatContainer.value.scroll({
