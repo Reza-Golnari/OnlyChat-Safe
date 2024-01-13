@@ -7,6 +7,10 @@
     font-family: roboto;
     src: url("@/assets/fonts/roboto/Roboto-Regular.ttf");
   }
+  @font-face {
+    font-family: sans;
+    src: url("@/assets/fonts/iranSans/sans.ttf");
+  }
 }
 
 @layer utilities {

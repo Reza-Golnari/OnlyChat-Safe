@@ -69,7 +69,7 @@
           @click="leaveRoom()"
         >
           <li
-            class="text-red-500 font-bold flex gap-1 transition-colors dark:text-white"
+            class="text-red-500 font-bold text-sm md:text-base flex gap-1 transition-colors dark:text-white"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-6 h-6"
+              class="w-5 h-5 md:w-6 md:h-6"
             >
               <path
                 stroke-linecap="round"
@@ -116,7 +116,7 @@
             height="20"
             viewBox="0 0 16 16"
             fill="none"
-            class="cursor-pointer w-2/12 md:w-1/12 pl-3"
+            class="cursor-pointer w-2/12 md:w-1/12 pl-3 mx-auto"
             :class="{ 'stroke-primary': msg }"
             @click="sendMessage(msg)"
           >
@@ -157,10 +157,12 @@ let userID: string = "";
 const isSubMenu: Ref<boolean> = ref(false);
 const chatContainer = ref();
 const msgList: Ref<object[]> = ref([]);
+let date: Date;
 let msgData: {
   user: string;
   text: string;
   isNotification: boolean;
+  time?: any;
 };
 
 if (!store.checkStore()) {
@@ -174,11 +176,12 @@ function closeSubMenu(event: any): void {
 }
 
 function leaveRoom(): void {
+  socket.emit("leave");
   store.setInfo("", "");
   router.push("/");
 }
 
-const socket = io("http://127.0.0.1:8000");
+const socket = io("http://127.0.0.1:8080");
 
 function copyRoomName() {
   if (!navigator.clipboard) return;
@@ -204,35 +207,42 @@ socket.on("connect", () => {
   msgList.value.push(msgData);
 });
 
+socket.on("alert", (data: string) => {
+  msgData = {
+    user: "",
+    text: data,
+    isNotification: true,
+  };
+  msgList.value.push(msgData);
+});
+
 socket.on("user-data", (data: string) => {
   userID = data;
 });
 
 socket.on("chat-message", (data: string, id: string) => {
-  console.log(data);
+  date = new Date();
+  date = date.getHours() + ":" + date.getMinutes();
   if (userID === id) {
     msgList.value.push({
       user: store.userName,
-      text: data,
+      text: data.split(":")[1],
       isNotification: false,
+      time: date,
+    });
+    nextTick(() => {
+      chatContainer.value.scroll({
+        top: chatContainer.value.scrollHeight,
+        behavior: "smooth",
+      });
     });
     return;
   }
-  if (data.match("joined in chat!") || data.match("Left the chat")) {
-    msgData = {
-      user: "",
-      text: data,
-      isNotification: true,
-    };
-    msgList.value.push(msgData);
-
-    return;
-  }
-  console.log(false);
   msgData = {
     user: data.split(":")[0],
     text: data.split(":")[1],
     isNotification: false,
+    time: date,
   };
   msgList.value.push(msgData);
   nextTick(() => {
@@ -245,7 +255,7 @@ socket.on("chat-message", (data: string, id: string) => {
 
 function sendMessage(newMsg: string) {
   if (!newMsg) return;
-  socket.emit("chat-message", newMsg);
+  socket.emit("chat-message", encodeToBase64(newMsg));
   msg.value = "";
   nextTick(() => {
     chatContainer.value.scroll({
@@ -265,10 +275,16 @@ onBeforeUnmount(() => {
     msgList.value.push(msgData);
   });
 });
-</script>
 
-<style scoped>
-.container {
-  overflow: auto;
+// encode text function
+const encoder = new TextEncoder();
+let utf8Array, binaryStr;
+function encodeToBase64(str: string) {
+  utf8Array = encoder.encode(str);
+  binaryStr = "";
+  for (let i = 0; i < utf8Array.length; i++) {
+    binaryStr += String.fromCharCode(utf8Array[i]);
+  }
+  return btoa(binaryStr);
 }
-</style>
+</script>
