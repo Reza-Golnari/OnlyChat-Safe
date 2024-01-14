@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "dotenv": "^16.3.1",
     "franc-min": "^6.2.0",
     "pinia": "^2.1.7",
     "socket.io-client": "^2.4.0",
@@ -19,7 +20,7 @@
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.2",
-    "@types/node": "^18.19.3",
+    "@types/node": "^18.19.6",
     "@vitejs/plugin-vue": "^4.5.2",
     "@vue/tsconfig": "^0.5.0",
     "autoprefixer": "^10.4.16",

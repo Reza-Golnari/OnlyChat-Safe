@@ -1,28 +1,28 @@
 <template>
   <div
     class="flex items-center"
-    :class="{ 'justify-end': msg.user === store.userName }"
+    :class="{ 'justify-end': isAuthUser() }"
     v-if="!msg.isNotification"
   >
     <div
       class="flex flex-col shadow py-1 px-3 min-w-52 max-w-[280px] md:max-w-[450px] lg:max-w-[700px] w-max rounded transition-colors"
       :class="[
-        { 'bg-primary': msg.user === store.userName },
-        { 'dark:bg-primary': msg.user === store.userName },
-        { 'dark:text-white': msg.user === store.userName },
-        { 'text-white': msg.user === store.userName },
-        { 'dark:bg-gray-200': msg.user !== store.userName },
+        { 'bg-primary': isAuthUser() },
+        { 'dark:bg-primary': isAuthUser() },
+        { 'dark:text-white': isAuthUser() },
+        { 'text-white': isAuthUser() },
+        { 'dark:bg-gray-200': !isAuthUser() },
       ]"
     >
       <div
         class="font-bold decoration-auto text-sm"
-        :class="{ 'text-end': msg.user === store.userName }"
+        :class="{ 'text-end': isAuthUser() }"
       >
-        {{ msg.user }}
+        {{ formattedUser }}
       </div>
       <p
         class="text-sm md:text-base first-letter:ml-2 text-wrap break-words text font-sans"
-        :class="{ 'text-end': msg.user === store.userName }"
+        :class="{ 'text-end': isAuthUser() }"
       >
         {{ msg.text }}
       </p>
@@ -38,11 +38,18 @@
 
 <script setup lang="ts">
 import Notification from "@/components/Notification.vue";
-import { defineProps } from "vue";
+import { defineProps, computed } from "vue";
 import { useStore } from "@/stores";
 
 const store = useStore();
 const props = defineProps(["msg"]);
 const msg = props.msg;
-msg.user[0] = msg.user[0].toUpperCase();
+
+const formattedUser = computed(() => {
+  return msg.user.charAt(0).toUpperCase() + msg.user.slice(1);
+});
+
+function isAuthUser(): boolean {
+  return msg.user === store.userName;
+}
 </script>

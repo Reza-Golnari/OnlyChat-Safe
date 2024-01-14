@@ -141,7 +141,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref, type Ref, nextTick } from "vue";
+import { onBeforeUnmount, ref, type Ref, nextTick, onMounted } from "vue";
 import { useStore } from "@/stores";
 import io from "socket.io-client";
 import { useRouter } from "vue-router";
@@ -157,7 +157,7 @@ let userID: string = "";
 const isSubMenu: Ref<boolean> = ref(false);
 const chatContainer = ref();
 const msgList: Ref<object[]> = ref([]);
-let date: Date;
+let date: string | Date;
 let msgData: {
   user: string;
   text: string;
@@ -181,7 +181,7 @@ function leaveRoom(): void {
   router.push("/");
 }
 
-const socket = io("http://127.0.0.1:8080");
+const socket = io(import.meta.env.VITE_API_URL);
 
 function copyRoomName() {
   if (!navigator.clipboard) return;
@@ -205,6 +205,7 @@ socket.on("connect", () => {
     isNotification: true,
   };
   msgList.value.push(msgData);
+  scrollContainer();
 });
 
 socket.on("alert", (data: string) => {
@@ -214,6 +215,7 @@ socket.on("alert", (data: string) => {
     isNotification: true,
   };
   msgList.value.push(msgData);
+  scrollContainer();
 });
 
 socket.on("user-data", (data: string) => {
@@ -230,12 +232,8 @@ socket.on("chat-message", (data: string, id: string) => {
       isNotification: false,
       time: date,
     });
-    nextTick(() => {
-      chatContainer.value.scroll({
-        top: chatContainer.value.scrollHeight,
-        behavior: "smooth",
-      });
-    });
+    scrollContainer();
+
     return;
   }
   msgData = {
@@ -245,24 +243,13 @@ socket.on("chat-message", (data: string, id: string) => {
     time: date,
   };
   msgList.value.push(msgData);
-  nextTick(() => {
-    chatContainer.value.scroll({
-      top: chatContainer.value.scrollHeight,
-      behavior: "smooth",
-    });
-  });
+  scrollContainer();
 });
 
 function sendMessage(newMsg: string) {
   if (!newMsg) return;
   socket.emit("chat-message", encodeToBase64(newMsg));
   msg.value = "";
-  nextTick(() => {
-    chatContainer.value.scroll({
-      top: chatContainer.value.scrollHeight,
-      behavior: "smooth",
-    });
-  });
 }
 
 onBeforeUnmount(() => {
@@ -273,8 +260,18 @@ onBeforeUnmount(() => {
       isNotification: true,
     };
     msgList.value.push(msgData);
+    scrollContainer();
   });
 });
+
+function scrollContainer() {
+  nextTick(() => {
+    chatContainer.value.scroll({
+      top: chatContainer.value.scrollHeight,
+      behavior: "smooth",
+    });
+  });
+}
 
 // encode text function
 const encoder = new TextEncoder();

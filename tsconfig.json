@@ -1,5 +1,8 @@
 {
   "files": [],
+  "vueCompilerOptions": {
+    "lib": ["WebWorker"]
+  },
   "references": [
     {
       "path": "./tsconfig.node.json"
