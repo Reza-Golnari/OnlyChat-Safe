@@ -116,7 +116,7 @@
             height="20"
             viewBox="0 0 16 16"
             fill="none"
-            class="cursor-pointer w-2/12 md:w-1/12 pl-3 mx-auto"
+            class="cursor-pointer w-2/12 md:w-1/12 pl-3 ml-auto"
             :class="{ 'stroke-primary': msg }"
             @click="sendMessage(msg)"
           >
@@ -149,6 +149,22 @@ import Message from "@/components/Message.vue";
 
 document.title = "OnlyChat | Room";
 
+interface MessageInterface {
+  user: string;
+  text: string;
+  isNotification: boolean;
+  time?: string;
+}
+
+class Msg implements MessageInterface {
+  constructor(
+    public user: string,
+    public text: string,
+    public isNotification: boolean,
+    public time?: string
+  ) {}
+}
+
 const router = useRouter();
 const store = useStore();
 const msg: Ref<string> = ref("");
@@ -158,12 +174,7 @@ const isSubMenu: Ref<boolean> = ref(false);
 const chatContainer = ref();
 const msgList: Ref<object[]> = ref([]);
 let date: string | Date;
-let msgData: {
-  user: string;
-  text: string;
-  isNotification: boolean;
-  time?: any;
-};
+let msgData: Msg;
 
 if (!store.checkStore()) {
   router.push("/");
@@ -199,21 +210,13 @@ function copyRoomName() {
 socket.emit("join", store.roomName, store.userName);
 
 socket.on("connect", () => {
-  msgData = {
-    user: "",
-    text: `${store.userName} Connected!`,
-    isNotification: true,
-  };
+  msgData = new Msg("", `${store.userName} Connected!`, true);
   msgList.value.push(msgData);
   scrollContainer();
 });
 
 socket.on("alert", (data: string) => {
-  msgData = {
-    user: "",
-    text: data,
-    isNotification: true,
-  };
+  msgData = new Msg("", data, true);
   msgList.value.push(msgData);
   scrollContainer();
 });
@@ -226,22 +229,13 @@ socket.on("chat-message", (data: string, id: string) => {
   date = new Date();
   date = date.getHours() + ":" + date.getMinutes();
   if (userID === id) {
-    msgList.value.push({
-      user: store.userName,
-      text: data.split(":")[1],
-      isNotification: false,
-      time: date,
-    });
+    if (typeof store.userName !== "string") return;
+    msgData = new Msg(store.userName, data.split(":")[1], false, date);
+    msgList.value.push(msgData);
     scrollContainer();
-
     return;
   }
-  msgData = {
-    user: data.split(":")[0],
-    text: data.split(":")[1],
-    isNotification: false,
-    time: date,
-  };
+  msgData = new Msg(data.split(":")[0], data.split(":")[1], false, date);
   msgList.value.push(msgData);
   scrollContainer();
 });
@@ -254,11 +248,7 @@ function sendMessage(newMsg: string) {
 
 onBeforeUnmount(() => {
   socket.on("disconnect", () => {
-    msgData = {
-      user: "",
-      text: `${store.userName} Disconnected!`,
-      isNotification: true,
-    };
+    msgData = new Msg("", `${store.userName} Disconnected!`, true);
     msgList.value.push(msgData);
     scrollContainer();
   });
