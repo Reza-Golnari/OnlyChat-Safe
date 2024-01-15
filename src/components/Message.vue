@@ -18,8 +18,8 @@
         {{ formattedUser }}
       </div>
       <p
-        class="text-sm md:text-base first-letter:ml-2 text-wrap break-words text font-sans"
-        :class="{ 'text-end': isAuthUser() }"
+        class="text-sm md:text-base text-wrap break-words text font-sans"
+        :class="[{ 'text-end': isAuthUser() }, { rtl: !isRtl }]"
       >
         {{ msg.text }}
       </p>
@@ -37,6 +37,7 @@
 import Notification from "@/components/Notification.vue";
 import { defineProps, computed } from "vue";
 import { useStore } from "@/stores";
+import { checkLanguage } from "@/composables/lang.ts";
 
 const store = useStore();
 const props = defineProps(["msg"]);
@@ -49,6 +50,10 @@ const formattedUser = computed(() => {
 function isAuthUser(): boolean {
   return msg.user === store.userName;
 }
+
+const isRtl = computed(() => {
+  return checkLanguage(msg.text);
+});
 
 const msgTime = computed(() => {
   const timeArr = msg.time.split(":");
