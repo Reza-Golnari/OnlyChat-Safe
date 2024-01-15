@@ -14,10 +14,7 @@
         { 'dark:bg-gray-200': !isAuthUser() },
       ]"
     >
-      <div
-        class="font-bold decoration-auto text-sm"
-        :class="{ 'text-end': isAuthUser() }"
-      >
+      <div class="font-bold text-sm" :class="{ 'text-end': isAuthUser() }">
         {{ formattedUser }}
       </div>
       <p
@@ -27,7 +24,7 @@
         {{ msg.text }}
       </p>
       <div>
-        <p class="text-xs">
+        <p class="text-xs" :class="{ 'text-end': !isAuthUser() }">
           {{ msg.time }}
         </p>
       </div>
