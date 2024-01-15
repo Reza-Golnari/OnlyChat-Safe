@@ -21,7 +21,8 @@
         class="text-sm md:text-base text-wrap break-words text font-sans"
         :class="[
           { 'text-end': isAuthUser() },
-          { rtl: !isAuthUser() && !isRtl },
+          { rtl: !isAuthUser() && isRtl },
+          { rtl: isAuthUser() && !isRtl },
         ]"
       >
         {{ msg.text }}
