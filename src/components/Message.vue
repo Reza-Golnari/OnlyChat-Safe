@@ -24,8 +24,8 @@
         {{ msg.text }}
       </p>
       <div>
-        <p class="text-xs" :class="{ 'text-end': !isAuthUser() }">
-          {{ msg.time }}
+        <p class="text-xs">
+          {{ msgTime }}
         </p>
       </div>
     </div>
@@ -49,4 +49,15 @@ const formattedUser = computed(() => {
 function isAuthUser(): boolean {
   return msg.user === store.userName;
 }
+
+const msgTime = computed(() => {
+  const timeArr = msg.time.split(":");
+  if (timeArr[0].length < 2) {
+    timeArr[0] = `0${timeArr[0]}`;
+  }
+  if (timeArr[1].length < 2) {
+    timeArr[1] = `0${timeArr[1]}`;
+  }
+  return timeArr.join(":");
+});
 </script>
