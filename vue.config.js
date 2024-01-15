@@ -1,18 +1,31 @@
 module.exports = {
-  // ...other vue-cli plugin options...
   pwa: {
-    name: "OnlyChat",
-    themeColor: "#4DBA87",
-    msTileColor: "#000000",
-    appleMobileWebAppCapable: "yes",
-    appleMobileWebAppStatusBarStyle: "black",
+    manifestOptions: {
+      name: "My App",
+      themeColor: "#4DBA87",
+      msTileColor: "#000000",
+      appleMobileWebAppCapable: "yes",
+      appleMobileWebAppStatusBarStyle: "black",
+      manifestPath: "/manifest.json",
 
-    // configure the workbox plugin
-    workboxPluginMode: "InjectManifest",
-    workboxOptions: {
-      // swSrc is required in InjectManifest mode.
-      swSrc: "dev/sw.js",
-      // ...other Workbox options...
+      workboxPluginMode: "InjectManifest",
+      workboxOptions: {
+        swSrc: true,
+      },
+
+      themeColor: "#4DBA87",
+      msTileColor: "#000000",
+      appleMobileWebAppCapable: "yes",
+      appleMobileWebAppStatusBarStyle: "black",
+      iconPaths: {
+        maskicon: null,
+        favicon32: "./logo-color-sm.jpg",
+        favicon16: "./logo-rounded.jpg",
+        appleTouchIcon: null,
+        msTileImage: null,
+      },
+      // configure the workbox plugin
+      workboxPluginMode: "GenerateSW",
     },
   },
 };
