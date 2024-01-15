@@ -3,6 +3,9 @@
   "vueCompilerOptions": {
     "lib": ["WebWorker"]
   },
+  "compilerOptions": {
+    "types": ["socket.io-client"]
+  },
   "references": [
     {
       "path": "./tsconfig.node.json"
