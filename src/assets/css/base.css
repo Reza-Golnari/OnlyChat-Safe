@@ -38,6 +38,10 @@
   opacity: 1;
 }
 
+.rtl {
+  direction: rtl;
+}
+
 *::-webkit-scrollbar {
   display: none;
 }

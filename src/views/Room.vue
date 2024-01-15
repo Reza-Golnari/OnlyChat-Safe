@@ -109,6 +109,7 @@
             type="text"
             v-model="msg"
             @keydown.enter.prevent="sendMessage(msg)"
+            ref="input"
             placeholder="Start typing..."
             class="outline-none w-10/12 md:11/12 py-2 dark:bg-zinc-900 transition-colors dark:text-white font-sans"
           />
@@ -143,11 +144,12 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref, type Ref, nextTick } from "vue";
+import { onBeforeUnmount, ref, type Ref, nextTick, watch } from "vue";
 import { useStore } from "@/stores";
 import io from "socket.io-client";
 import { useRouter } from "vue-router";
 import Message from "@/components/Message.vue";
+import { checkLanguage } from "@/composables/lang.ts";
 
 document.title = "OnlyChat | Room";
 
@@ -177,10 +179,16 @@ const chatContainer = ref();
 const msgList: Ref<object[]> = ref([]);
 let time: string | Date;
 let msgData: Msg;
+const input = ref();
 
 if (!store.checkStore()) {
   router.push("/");
 }
+
+watch(msg, () => {
+  if (checkLanguage(msg.value)) input.value.classList.add("rtl");
+  else input.value.classList.remove("rtl");
+});
 
 function closeSubMenu(event: any): void {
   if (event.target.classList.contains("subIcon")) return;
