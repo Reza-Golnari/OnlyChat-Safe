@@ -146,10 +146,11 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref, type Ref, nextTick, watch } from "vue";
 import { useStore } from "@/stores";
+// @ts-ignor
 import io from "socket.io-client";
 import { useRouter } from "vue-router";
 import Message from "@/components/Message.vue";
-import { checkLanguage } from "@/composables/lang.ts";
+import { checkLanguage } from "@/composables/lang";
 
 document.title = "OnlyChat | Room";
 

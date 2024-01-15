@@ -19,7 +19,10 @@
       </div>
       <p
         class="text-sm md:text-base text-wrap break-words text font-sans"
-        :class="[{ 'text-end': isAuthUser() }, { rtl: !isRtl }]"
+        :class="[
+          { 'text-end': isAuthUser() },
+          { rtl: !isAuthUser() && !isRtl },
+        ]"
       >
         {{ msg.text }}
       </p>
@@ -37,7 +40,7 @@
 import Notification from "@/components/Notification.vue";
 import { defineProps, computed } from "vue";
 import { useStore } from "@/stores";
-import { checkLanguage } from "@/composables/lang.ts";
+import { checkLanguage } from "@/composables/lang";
 
 const store = useStore();
 const props = defineProps(["msg"]);
