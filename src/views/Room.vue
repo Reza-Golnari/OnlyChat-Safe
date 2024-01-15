@@ -98,7 +98,9 @@
           class="space-y-3 min-h-11/12 overflow-x-hidden"
           ref="chatContainer"
         >
-          <Message v-for="(msg, index) in msgList" :key="index" :msg="msg" />
+          <transition-group name="msg">
+            <Message :msg="msg" v-for="(msg, index) in msgList" :key="index" />
+          </transition-group>
         </div>
         <div
           class="flex items-center justify-between md:w-5/6 min-w-72 w-full mx-auto px-3 border rounded-lg"
@@ -108,7 +110,7 @@
             v-model="msg"
             @keydown.enter.prevent="sendMessage(msg)"
             placeholder="Start typing..."
-            class="outline-none w-10/12 md:11/12 py-2 dark:bg-zinc-900 transition-colors dark:text-white"
+            class="outline-none w-10/12 md:11/12 py-2 dark:bg-zinc-900 transition-colors dark:text-white font-sans"
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -141,7 +143,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref, type Ref, nextTick, onMounted } from "vue";
+import { onBeforeUnmount, ref, type Ref, nextTick } from "vue";
 import { useStore } from "@/stores";
 import io from "socket.io-client";
 import { useRouter } from "vue-router";
@@ -173,7 +175,7 @@ let userID: string = "";
 const isSubMenu: Ref<boolean> = ref(false);
 const chatContainer = ref();
 const msgList: Ref<object[]> = ref([]);
-let date: string | Date;
+let time: string | Date;
 let msgData: Msg;
 
 if (!store.checkStore()) {
@@ -226,16 +228,16 @@ socket.on("user-data", (data: string) => {
 });
 
 socket.on("chat-message", (data: string, id: string) => {
-  date = new Date();
-  date = date.getHours() + ":" + date.getMinutes();
+  time = new Date();
+  time = time.getHours() + ":" + time.getMinutes();
   if (userID === id) {
     if (typeof store.userName !== "string") return;
-    msgData = new Msg(store.userName, data.split(":")[1], false, date);
+    msgData = new Msg(store.userName, data.split(":")[1], false, time);
     msgList.value.push(msgData);
     scrollContainer();
     return;
   }
-  msgData = new Msg(data.split(":")[0], data.split(":")[1], false, date);
+  msgData = new Msg(data.split(":")[0], data.split(":")[1], false, time);
   msgList.value.push(msgData);
   scrollContainer();
 });

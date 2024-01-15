@@ -28,6 +28,16 @@
   opacity: 0;
 }
 
+.msg-enter-active,
+.msg-leave-active {
+  opacity: 0;
+  transition: all 0.3s linear;
+}
+.msg-enter-to,
+.msg-leave-to {
+  opacity: 1;
+}
+
 *::-webkit-scrollbar {
   display: none;
 }
