@@ -19,8 +19,8 @@ module.exports = {
       appleMobileWebAppStatusBarStyle: "black",
       iconPaths: {
         maskicon: null,
-        favicon32: "./logo-color-sm.jpg",
-        favicon16: "./logo-rounded.jpg",
+        favicon32: "./logo-512.png",
+        favicon16: "./logo-192.png",
         appleTouchIcon: null,
         msTileImage: null,
       },
