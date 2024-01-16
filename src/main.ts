@@ -1,6 +1,5 @@
 import "./assets/css/base.css";
 import "register-service-worker";
-import "/manifest.json";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
