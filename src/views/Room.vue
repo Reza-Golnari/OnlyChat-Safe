@@ -111,7 +111,7 @@
             @keydown.enter.prevent="sendMessage(msg)"
             ref="input"
             placeholder="Start typing..."
-            class="outline-none w-11/12 md:w-11/12 h-10 max-h-12 py-2 dark:bg-zinc-900 transition-colors dark:text-white font-sans resize-none"
+            class="outline-none w-full h-10 max-h-12 py-2 dark:bg-zinc-900 transition-colors dark:text-white font-sans resize-none"
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +119,7 @@
             height="20"
             viewBox="0 0 16 16"
             fill="none"
-            class="cursor-pointer w-2/12 md:w-1/12 pl-3 ml-auto"
+            class="cursor-pointer w-max px-2 ml-auto"
             :class="{ 'stroke-primary': msg }"
             @click="sendMessage(msg)"
           >
