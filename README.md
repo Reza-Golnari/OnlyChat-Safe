@@ -1,6 +1,6 @@
 # OnlyChat-Safe
 
-This template should help get you started developing with Vue 3 in Vite.
+This is a chat room for you, we don't save messages so it's safe.
 
 ## Recommended IDE Setup
 
