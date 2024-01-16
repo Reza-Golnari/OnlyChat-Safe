@@ -144,7 +144,14 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref, type Ref, nextTick, watch } from "vue";
+import {
+  onBeforeUnmount,
+  ref,
+  type Ref,
+  nextTick,
+  watch,
+  onMounted,
+} from "vue";
 import { useStore } from "@/stores";
 // @ts-ignor
 import io from "socket.io-client";
@@ -182,9 +189,11 @@ let time: string | Date;
 let msgData: Msg;
 const input = ref();
 
-if (!store.checkStore()) {
-  router.push("/");
-}
+onMounted(() => {
+  if (!store.checkStore()) {
+    router.push("/");
+  }
+});
 
 watch(msg, () => {
   if (checkLanguage(msg.value)) input.value.classList.add("rtl");
